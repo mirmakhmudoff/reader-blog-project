@@ -10,7 +10,7 @@ Follow these instructions to set up the project:
 
     ```bash
     git clone https://github.com/mirmakhmudoff/reader-blog-project.git
-    cd djangoProject
+    cd reader-blog-project
     ```
 
 2. **Create and Activate a Virtual Environment:**
