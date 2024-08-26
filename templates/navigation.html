@@ -1,0 +1,70 @@
+{% load static %}
+
+<header class="navigation fixed-top">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-white">
+            <a class="navbar-brand order-1">
+                <img class="img-fluid" width="100px" src="{% static 'images/logo.png' %}"
+                     alt="Reader | Hugo Personal Blog Template">
+            </a>
+            <div class="collapse navbar-collapse text-center order-lg-2 order-3" id="navigation">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}">Home page</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about-us' %}">About Us</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                          aria-expanded="false">Pages <i class="ti-angle-down ml-1"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                          
+                          <a class="dropdown-item" href="{% url 'authors' %}">Author</a>
+                          
+                          <a class="dropdown-item" href="{% url 'author-single' %}?author_id=None">Author Single</a>
+                            
+                          <a class="dropdown-item" href="{% url 'post-details' %}?post_id=None">Post Details</a>
+                            
+                          <a class="dropdown-item" href="{% url 'tags' %}?tag=None">Tags</a>
+            
+                          <a class="dropdown-item" href="{% url 'search' %}?q=None">Search Result</a>
+            
+                          <a class="dropdown-item" href="{% url 'search' %}?q=notFound">Search Not Found</a>
+                          
+                          <a class="dropdown-item" href="{% url 'privacy-policy' %}">Privacy Policy</a>
+                          
+                          <a class="dropdown-item" href="{% url 'terms-conditions' %}">Terms Conditions</a>
+            
+                          <a class="dropdown-item" href="{% url '404' %}">404 Page</a>
+                          
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="order-2 order-lg-3 d-flex align-items-center">
+                <!-- search -->
+                <form method="POST" action="{% url 'search' %}" class="search-bar">
+                    {% csrf_token %}
+                    <input id="search-query" name="q" type="search" placeholder="Type &amp; Hit Enter...">
+                </form>
+
+                <button class="navbar-toggler border-0 order-1" type="button" data-toggle="collapse"
+                        data-target="#navigation">
+                    <i class="ti-menu"></i>
+                </button>
+            </div>
+
+        </nav>
+    </div>
+</header>
+<!-- /navigation -->

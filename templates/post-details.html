@@ -1,0 +1,168 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <title>Reader | Hugo Personal Blog Template</title>
+
+    <!-- mobile responsive meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="This is meta description">
+    <meta name="author" content="Themefisher">
+    <meta name="generator" content="Hugo 0.74.3"/>
+
+    <!-- plugins -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" media="screen">
+
+    <!--Favicon-->
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+
+    <meta property="og:title" content="Reader | Hugo Personal Blog Template"/>
+    <meta property="og:description" content="This is meta description"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content=""/>
+    <meta property="og:updated_time" content="2020-03-15T15:40:24+06:00"/>
+</head>
+<body>
+{% include 'navigation.html' %}
+
+<div class="py-4"></div>
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class=" col-lg-9   mb-5 mb-lg-0">
+                <article>
+                    <div class="post-slider">
+                        {% for picture in post.pictures.all %}
+                            <img src="{{ picture.image.url }}" class="card-img-top" alt="post-thumb">
+                        {% endfor %}
+                    </div>
+
+                    <h1 class="h2">{{ post.title }}</h1>
+                    <ul class="card-meta my-3 list-inline">
+                        <li class="list-inline-item">
+                            <a href="{% url 'author-single' %}?author_id={{ post.author_get.id }}"
+                               class="card-meta-author">
+                                <span>{{ post.author_get.first_name }} {{ post.author_get.last_name }}</span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <i class="ti-timer"></i>2 Min To Read
+                        </li>
+                        <li class="list-inline-item">
+                            <i class="ti-calendar"></i>{{ post.date_posted }}
+                        </li>
+                        <li class="list-inline-item">
+                            <ul class="card-meta-tag list-inline">
+                                {% for tag in post.tags.all %}
+                                    <li class="list-inline-item"><a
+                                            href="{% url 'tags' %}?tag={{ tag.name }}">{{ tag.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="content">
+                        <p>{{ post.content }}</p>
+                    </div>
+                </article>
+
+            </div>
+
+            <div class="col-lg-9 col-md-12">
+            <div class="mb-5 border-top mt-4 pt-5">
+                <h3 class="mb-4">Comments</h3>
+        
+                {% for comment in post.comments.all %}
+                    <div class="media d-block d-sm-flex mb-4 pb-4">
+                        <div class="media-body">
+                            <a class="d-inline-block mr-2 mb-3 mb-md-0" href="#">
+                                <img src="{% static 'images/user.png' %}" class="" alt="">
+                            </a>
+                            <a href="" class="h4 d-inline-block mb-5">{{ comment.author_get.first_name }} {{ comment.author_get.last_name }}</a>
+                            <div class="media-body ml-5 w-80">
+                                <p>{{ comment.content }}</p>
+                                <span class="text-black-800 mr-3 font-weight-600">{{ comment.date_comment }}</span>
+                                <a class="text-primary font-weight-600 reply-btn" href="#"
+                                   data-comment-id="{{ comment.id }}" data-author="{{ comment.author_get.first_name }} {{ comment.author_get.last_name }}">Reply</a>
+                            </div>
+                        </div>
+                    </div>
+        
+                    {% for reply in comment.replies_get %}
+                        <div class="media d-block d-sm-flex mb-4 pb-4 ml-5">
+                            <div class="media-body">
+                                <a class="d-inline-block mr-2 mb-3 mb-md-0" href="#">
+                                    <img src="{% static 'images/arrow.png' %}" class="" alt="">
+                                </a>
+                                <a href="" class="h4 d-inline-block mb-5">{{ reply.author_get.first_name }} {{ reply.author_get.last_name }}</a>
+                                <div class="media-body ml-5 w-80">
+                                    <p>{{ reply.content }}</p>
+                                    <span class="text-black-800 mr-3 font-weight-600">{{ reply.date_reply }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+        
+            </div>
+        
+            <div>
+                <h3 class="mb-4"><span id="form-title">Write Comment</span></h3>
+                <form id="comment-form" method="POST" action="{% url 'comment' %}?type=default&post_id={{ post.id }}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <textarea class="form-control shadow-none" name="comment" rows="7" required></textarea>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Comment Now</button>
+                </form>
+            </div>
+        </div>
+
+
+        </div>
+    </div>
+</section>
+
+
+{% include 'footer.html' %}
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<script src="{% static 'js/slick.min.js' %}"></script>
+
+<script src="{% static 'js/instafeed.min.js' %}"></script>
+
+<script src="{% static 'js/script.js' %}"></script>
+
+<script>
+    document.querySelectorAll('.reply-btn').forEach(function (btn) {
+        btn.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const commentId = this.getAttribute('data-comment-id');
+            const author = this.getAttribute('data-author');
+
+            document.getElementById('form-title').textContent = 'Write Reply for ' + author;
+
+            const form = document.getElementById('comment-form');
+            form.action = `{% url 'comment' %}?type=reply&post_id={{ post.id }}&comment_id=${commentId}`;
+
+            form.querySelector('textarea').focus();
+        });
+    });
+</script>
+
+</body>
+</html>

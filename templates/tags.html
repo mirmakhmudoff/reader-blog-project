@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+
+<!--
+ // WEBSITE: https://themefisher.com
+ // TWITTER: https://twitter.com/themefisher
+ // FACEBOOK: https://www.facebook.com/themefisher
+ // GITHUB: https://github.com/themefisher/
+-->
+
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <title>Reader | Hugo Personal Blog Template</title>
+
+    <!-- mobile responsive meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="This is meta description">
+    <meta name="author" content="Themefisher">
+    <meta name="generator" content="Hugo 0.74.3"/>
+
+    <!-- plugins -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" media="screen">
+
+    <!--Favicon-->
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+
+    <meta property="og:title" content="Reader | Hugo Personal Blog Template"/>
+    <meta property="og:description" content="This is meta description"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content=""/>
+    <meta property="og:updated_time" content="2020-03-15T15:40:24+06:00"/>
+</head>
+<body>
+
+{% include 'navigation.html' %}
+
+<section class="section">
+    <div class="py-4"></div>
+    <div class="container">
+        <div class="row">
+            <div
+                    class="col-lg-8  mb-5 mb-lg-0">
+                <h1 class="h2 mb-4">Showing items from
+                    <mark>{{ tag }}</mark>
+                </h1>
+
+                {% for post in posts %}
+                    <article class="card mb-4">
+                        <div class="post-slider">
+                            {% for picture in post.pictures.all %}
+                                <img src="{{ picture.image.url }}" class="card-img-top" alt="post-thumb">
+                            {% endfor %}
+                        </div>
+                        <div class="card-body">
+                            <h3 class="mb-3"><a class="post-title" href="post-details.html">Advice From a Twenty
+                                Something</a></h3>
+                            <ul class="card-meta list-inline">
+                                <li class="list-inline-item">
+                                    <a href="{% url 'author-single' %}?author_id={{ post.author_get.id }}"
+                                       class="card-meta-author">
+                                        <span>{{ post.author_get.first_name }} {{ post.author_get.last_name }}</span>
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <i class="ti-timer"></i>2 Min To Read
+                                </li>
+                                <li class="list-inline-item">
+                                    <i class="ti-calendar"></i>{{ post.date_posted }}
+                                </li>
+                                <li class="list-inline-item">
+                                    <ul class="card-meta-tag list-inline">
+                                        {% for tag in post.tags.all %}
+                                            <li class="list-inline-item"><a
+                                                    href="{% url 'tags' %}?tag={{ tag.name }}">{{ tag.name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            </ul>
+                            <p class="text-truncate">{{ post.content }}</p>
+                            <a href="{% url 'post-details' %}?post_id={{ post.id }}" class="btn btn-outline-primary">Read
+                                More</a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+
+            <aside class="col-lg-4 sidebar-inner">
+                <div class="widget widget-categories">
+                    <h4 class="widget-title"><span>Categories</span></h4>
+                    <ul class="list-unstyled widget-list">
+                        {% for category, count in categories.items %}
+                            <li><a href="{% url 'categories' %}?tag={{ category }}" class="d-flex">{{ category }} <small
+                                    class="ml-auto">({{ count }})</small></a></li>
+                        {% endfor %}
+                    </ul>
+                </div><!-- tags -->
+                <div class="widget">
+                    <h4 class="widget-title"><span>Tags</span></h4>
+                    <ul class="list-inline widget-list-inline widget-card">
+                        {% for tag in tags %}
+                            <li class="list-inline-item"><a
+                                    href="{% url 'tags' %}?tag={{ tag.name }}">{{ tag.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div><!-- recent post -->
+                <div class="widget">
+                    <h4 class="widget-title">Recent Post</h4>
+
+                    <!-- post-item -->
+                    {% for post in recent_posts %}
+                        <article class="widget-card">
+                            <div class="d-flex">
+                                <img class="card-img-sm" src="{{ post.pictures.first.image.url }}" alt="post-photo">
+                                <div class="ml-3">
+                                    <h5><a class="post-title"
+                                           href="{% url 'post-details' %}?post_id={{ post.id }}">{{ post.title }}</a>
+                                    </h5>
+                                    <ul class="card-meta list-inline mb-0">
+                                        <li class="list-inline-item mb-0">
+                                            <i class="ti-calendar"></i>{{ post.date_posted }}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+
+                <!-- Social -->
+                <div class="widget">
+                    <h4 class="widget-title"><span>Social Links</span></h4>
+                    <ul class="list-inline widget-social">
+                        <li class="list-inline-item"><a href="#"><i class="ti-facebook"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="ti-twitter-alt"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="ti-linkedin"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="ti-github"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="ti-youtube"></i></a></li>
+                    </ul>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+</section>
+
+{% include 'footer.html' %}
+
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<script src="{% static 'js/slick.min.js' %}"></script>
+
+<script src="{% static 'js/instafeed.min.js' %}"></script>
+
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
